@@ -5,15 +5,14 @@ import { Dialog } from '@headlessui/react'
 import Link from 'next/link'
 import { Button } from '@/components/UI/button'
 import { useAuth } from '@/hooks/useAuth'
-import { X, AlignJustify } from 'lucide-react'
+import { X, AlignJustify, Command } from 'lucide-react'
 import NovuNotificationCenter from '@/components/UI/novu-notification-center'
 import { useRouter } from 'next/navigation'
 
 const navigation = [
-  { name: 'About', href: '/about' },
-  { name: 'Dashboard', href: '/dashboard' },
-  { name: 'Contact', href: '/contact' },
-  { name: 'Pricing', href: '/pricing' },
+  { name: 'Home', href: '/' },
+  { name: 'URL Anaylysis', href: '/url-analysis' },
+  { name: 'Content Generation', href: '/content-generation' },
 ]
 
 export function Header() {
@@ -27,25 +26,21 @@ export function Header() {
   }
 
   return (
-    <header className="bg-gray-900">
+    <header className=" z-10">
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 "
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
           <Link href="#" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
-            <img
-              className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-              alt=""
-            />
+            <span className="sr-only">CONTENTIZE.AI</span>
+            <Command className='text-slate-200'/>
           </Link>
         </div>
         <div className="flex lg:hidden">
           <button
             type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-slate-200"
             onClick={() => setMobileMenuOpen(true)}
           >
             <span className="sr-only">Open main menu</span>
@@ -62,7 +57,7 @@ export function Header() {
             <Link
               key={item.name}
               href={item.href}
-              className="text-sm font-semibold leading-6 text-white"
+              className="text-sm font-semibold leading-6 text-slate-200"
             >
               {item.name}
             </Link>
@@ -72,14 +67,14 @@ export function Header() {
           {!authUser && (
             <div>
               <Link
-                href="/login"
-                className="text-sm font-semibold leading-6 mx-3 text-white"
+                href="#"
+                className="text-sm font-semibold leading-6 mx-3 text-slate-200"
               >
                 Log in
               </Link>
               <Link
-                href="/register"
-                className="text-sm font-semibold leading-6 mx-3 text-white"
+                href="#"
+                className="text-sm font-semibold leading-6 mx-3 text-slate-200"
               >
                 Register
               </Link>
@@ -90,7 +85,7 @@ export function Header() {
               {' '}
               <Link
                 href="/settings/profile"
-                className="text-white m-2 text-sm font-semibold leading-6"
+                className="text-slate-200 m-2 text-sm font-semibold leading-6"
               >
                 Settings
               </Link>
@@ -113,15 +108,11 @@ export function Header() {
           <div className="flex items-center justify-between">
             <Link href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                alt=""
-              />
+              <Command className='text-white'/>
             </Link>
             <button
               type="button"
-              className="-m-2.5 rounded-md p-2.5 text-gray-400"
+              className="-m-2.5 rounded-md p-2.5 text-slate-200"
               onClick={() => setMobileMenuOpen(false)}
             >
               <span className="sr-only">Close menu</span>
@@ -140,7 +131,7 @@ export function Header() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-white hover:bg-gray-800"
+                    className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-slate-200 hover:bg-gray-800"
                   >
                     {item.name}
                   </Link>
@@ -149,14 +140,14 @@ export function Header() {
               {!authUser && (
                 <div className="py-6">
                   <Link
-                    href="/login"
-                    className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-white hover:bg-gray-800"
+                    href="#"
+                    className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-slate-200 hover:bg-gray-800"
                   >
                     Log in
                   </Link>
                   <Link
-                    href="/register"
-                    className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-white hover:bg-gray-800"
+                    href="#"
+                    className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-slate-200 hover:bg-gray-800"
                   >
                     Register
                   </Link>
