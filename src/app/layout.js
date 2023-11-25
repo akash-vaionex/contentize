@@ -8,8 +8,8 @@ export const metadata = {
 
 export default function AppLayout({ children }) {
   return (
-    <html lang="en" className={`bg-white`}>
-      <body className="flex flex-col">
+    <html lang="en" className={`bg-gray-900`}>
+      <body className="flex flex-col bg-gray-900">
         <CombinedAuthProvider>{children}</CombinedAuthProvider>
       </body>
     </html>
