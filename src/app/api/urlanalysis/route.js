@@ -11,6 +11,8 @@ export async function GET(request) {
     let favicon;
     let keywords
     let tagCounts
+    let mainContent;
+    let canonicalLink;
 
     try {
         const response = await axios.get(url);
@@ -34,7 +36,8 @@ export async function GET(request) {
         const logoUrl = $('link[rel="icon"]').attr('href') || $('link[rel="shortcut icon"]').attr('href');
 
         // Extract canonical link
-        const canonicalLink = $('link[rel="canonical"]').attr('href');
+        canonicalLink = $('link[rel="canonical"]').attr('href');
+        mainContent = $('main, #content, .article-content').text();
 
         // Extract meta tags
         const metaTags = [];
@@ -67,6 +70,8 @@ export async function GET(request) {
             metaDescription,
             favicon,
             keywords,
+            mainContent,
+            canonicalLink,
             message: 'URL analyzed successfully.',
         }),
         {

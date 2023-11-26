@@ -19,7 +19,7 @@ export function Hero() {
       // Check if the request was successful
       if (response.status == 200) {
         // Parse the JSON response
-        setAnalysisResult(response.data);
+        setAnalysisResult(response.data?.result);
       } else {
         setAnalysisResult({ error: `Error: ${response.status}` });
       }

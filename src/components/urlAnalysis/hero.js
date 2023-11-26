@@ -1,11 +1,16 @@
 'use client'
 import axios from "axios";
 import { useState, useEffect } from "react"
+import { useRouter } from 'next/navigation';
+import { useContentContext } from "@/contexts/contentContext";
+
 export function Hero() {
   const [urlInput, setUrlInput] = useState('');
   const [analysisResult, setAnalysisResult] = useState({});
   const [loading, setLoading] = useState(false);
-
+  const [isContentLoading, setIsContentLoading] = useState(false)
+  const router = useRouter();
+  const { setGeneratedContent } = useContentContext()
 
   const analyzeUrl = async (e) => {
     e.preventDefault()
@@ -35,7 +40,6 @@ export function Hero() {
 
       if (event.key === 'Enter') {
         event.preventDefault();
-
         // 👇️ call submit function here
         analyzeUrl(event);
       }
@@ -48,6 +52,31 @@ export function Hero() {
     };
   }, []);
 
+
+  const analyseContent = async (e) => {
+    setIsContentLoading(true)
+    e.preventDefault();
+    try {
+      // Make an HTTP request to the provided URL
+      const response = await axios.post(`/api/contentanalysis`, {
+        data: analysisResult
+      });
+      console.log(response, 'dddadsffsdfasdfdsa')
+      console.log(response.status, 'dddhhdh')
+      // Check if the request was successful
+      if (response.status == 200) {
+        console.log('pushing it to data')
+        setGeneratedContent(response.data)
+        router.push('/generated-data')
+      } else {
+        // setAnalysisResult({ error: `Error: ${response.status}` });
+      }
+    } catch (error) {
+      // setAnalysisResult({ error: `Error: ${error.message}` });
+    } finally {
+      setIsContentLoading(false);
+    }
+  };
 
 
 
@@ -96,7 +125,7 @@ export function Hero() {
           </form>
         </div>
         <div id="result" className="mt-8">
-          {!analysisResult ? (
+          {analysisResult == {} ? (
             <p>{analysisResult.error}</p>
           ) : (
             <>
@@ -117,16 +146,24 @@ export function Hero() {
                   </dd>
                 </div>
                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm font-medium leading-6 text-white">Links</dt>
+                  <dt className="text-sm font-medium leading-6 text-white">Icon</dt>
                   <dd className="mt-2 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-                    {analysisResult?.links?.length > 0 && analysisResult?.links.map(el => <>
-                      {el} <br /></>)}
+                    {analysisResult?.favicon?.includes("http") ?
+                      <img src={`${analysisResult.favicon}`} className="w-10 h-10" /> : <img src={`${analysisResult.canonicalLink}${analysisResult.favicon}`} className="w-10 h-10" />
+                    }
                   </dd>
                 </div>
               </dl>
             </>
           )}
         </div>
+        {analysisResult && analysisResult != {} && <button
+          onClick={analyseContent}
+          className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          disabled={isContentLoading}
+        >
+          {isContentLoading ? 'Generating...' : 'Click to generate content'}
+        </button>}
       </div>
       <div
         className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"

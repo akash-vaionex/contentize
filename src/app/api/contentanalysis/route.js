@@ -44,13 +44,18 @@ export async function POST(request) {
     const body = await request.json()
     const referer = request.headers.get('referer')
     let gptResult;
+    console.log(body, 'ddd')
 
     try {
         const messages = [
             {
                 role: "assistant",
-                content: `As a content creator, envision a digital assistant tailored to your needs. Design a tool that streamlines your content creation process by analyzing websites for inspiration. Specify features that would make this tool indispensable, such as the ability to extract key information like titles, meta descriptions, and tags, and provide creative suggestions or prompts based on the analyzed content. How can this digital assistant elevate your content creation workflow and keep your ideas fresh and engaging?"
-                  Evaluate the following contente make them professional:\n\n${body.content}\n\n`,
+                content: `
+                "Imagine you are a seasoned writer crafting an engaging blog post for a website titled ${body.title}' The website aims to [describe the purpose or focus of the website from the description provided]. The keywords associated with this website are ${body?.keywords}.
+
+Write a compelling blog post of about 200 words that provides valuable insights, informative content, or engaging stories related to [one or more keywords from the provided list]. Ensure the tone is informative yet conversational, catering to the audience interested in mention the target audience or niche.
+
+Feel free to delve into ${body?.keywords}. The content should captivate readers, offering them actionable advice, interesting facts, or solutions to common problems within the domain of ${body.description}. Make the blog within 300-500 words only.\n Take this content for the refrence${body.content}\n\n`,
             },
         ];
 
