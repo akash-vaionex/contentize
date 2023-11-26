@@ -12,7 +12,6 @@ import { useRouter } from 'next/navigation'
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'URL Anaylysis', href: '/url-analysis' },
-  { name: 'Content Generation', href: '/content-generation' },
 ]
 
 export function Header() {
@@ -63,7 +62,7 @@ export function Header() {
             </Link>
           ))}
         </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        {/* <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {!authUser && (
             <div>
               <Link
@@ -95,7 +94,7 @@ export function Header() {
               <Button onClick={handleLogout}>Logout</Button>
             </div>
           )}
-        </div>
+        </div> */}
       </nav>
       <Dialog
         as="div"
@@ -137,29 +136,29 @@ export function Header() {
                   </Link>
                 ))}
               </div>
-              {!authUser && (
-                <div className="py-6">
-                  <Link
-                    href="#"
-                    className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-slate-200 hover:bg-gray-800"
-                  >
-                    Log in
-                  </Link>
-                  <Link
-                    href="#"
-                    className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-slate-200 hover:bg-gray-800"
-                  >
-                    Register
-                  </Link>
-                </div>
-              )}
-              {authUser && (
-                <div className="flex flex-col">
-                  {' '}
-                  <Button onClick={handleLogout}>Logout</Button>
-                  <Link href="/settings/profile">Settings</Link>
-                </div>
-              )}
+                {/* {!authUser && (
+                  <div className="py-6">
+                    <Link
+                      href="#"
+                      className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-slate-200 hover:bg-gray-800"
+                    >
+                      Log in
+                    </Link>
+                    <Link
+                      href="#"
+                      className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-slate-200 hover:bg-gray-800"
+                    >
+                      Register
+                    </Link>
+                  </div>
+                )}
+                {authUser && (
+                  <div className="flex flex-col">
+                    {' '}
+                    <Button onClick={handleLogout}>Logout</Button>
+                    <Link href="/settings/profile">Settings</Link>
+                  </div>
+                )} */}
             </div>
           </div>
         </Dialog.Panel>
