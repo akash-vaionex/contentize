@@ -1,15 +1,55 @@
 'use client'
+import axios from "axios";
 import { useState, useEffect } from "react"
 export function Hero() {
+  const [urlInput, setUrlInput] = useState('');
+  const [analysisResult, setAnalysisResult] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  const [url, setUrl] = useState('')
 
-  const urlAnalyze = (e)=>{
-    e.preventDefault();
-    console.log(url)
-  }
+  const analyzeUrl = async (e) => {
+    e.preventDefault()
+    setLoading(true);
+    console.log(urlInput, 'ddd')
+    try {
+      // Make an HTTP request to the provided URL
+      const response = await axios.get(`/api/urlanalysis?url=${encodeURIComponent(urlInput)}`);
+      console.log(response, 'dddhhdh')
+      // Check if the request was successful
+      if (response.status == 200) {
+        // Parse the JSON response
+        setAnalysisResult(response.data);
+      } else {
+        setAnalysisResult({ error: `Error: ${response.status}` });
+      }
+    } catch (error) {
+      setAnalysisResult({ error: `Error: ${error.message}` });
+    } finally {
+      setLoading(false);
+    }
+  };
 
- 
+  useEffect(() => {
+    const keyDownHandler = event => {
+      console.log('User pressed: ', event.key);
+
+      if (event.key === 'Enter') {
+        event.preventDefault();
+
+        // 👇️ call submit function here
+        analyzeUrl(event);
+      }
+    };
+
+    document.addEventListener('keydown', keyDownHandler);
+
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler);
+    };
+  }, []);
+
+
+
 
   return (
     <div className="relative isolate bg-gray-900 px-6 pt-14 lg:px-8">
@@ -35,23 +75,57 @@ export function Hero() {
           </p>
         </div>
         <div className="mt-8">
-          <form className="mt-2 flex flex-row space-x-2" onSubmit={urlAnalyze}>
+          <form className="mt-2 flex flex-row space-x-2" onSubmit={analyzeUrl}>
             <input
               type="url"
               name="url"
               id="url"
               className="block w-full rounded-md border-0 p-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  bg-transparent sm:text-sm sm:leading-6"
               placeholder="Enter Website URL"
-              value={url}
-              onChange={(e) => {setUrl(e.target.value)}}
+              value={urlInput}
+              onChange={(e) => setUrlInput(e.target.value)}
+
             />
             <button
               type="submit"
               className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              disabled={loading}
             >
-              Analyze
+              {loading ? 'Analyzing...' : 'Analyze'}
             </button>
           </form>
+        </div>
+        <div id="result" className="mt-8">
+          {!analysisResult ? (
+            <p>{analysisResult.error}</p>
+          ) : (
+            <>
+              <div className="mx-auto max-w-2xl lg:mx-0">
+                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Here is the result:</h2>
+              </div>
+
+              <dl className="divide-y divide-gray-100">
+                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm font-medium leading-6 text-white">Title</dt>
+                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{analysisResult.title}</dd>
+                </div>
+
+                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm font-medium leading-6 text-white">Description</dt>
+                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    {analysisResult.metaDescription}
+                  </dd>
+                </div>
+                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm font-medium leading-6 text-white">Links</dt>
+                  <dd className="mt-2 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
+                    {analysisResult?.links?.length > 0 && analysisResult?.links.map(el => <>
+                      {el} <br /></>)}
+                  </dd>
+                </div>
+              </dl>
+            </>
+          )}
         </div>
       </div>
       <div

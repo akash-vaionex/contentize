@@ -1,15 +1,36 @@
 'use client'
+import axios from "axios";
 import { useState, useEffect } from "react"
 export function Hero() {
+  const [content, setContent] = useState('')
+  const [analysisResult, setAnalysisResult] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  const [url, setUrl] = useState('')
 
-  const urlAnalyze = (e)=>{
+  const contentAnalyze = async (e) => {
     e.preventDefault();
-    console.log(url)
+    try {
+      // Make an HTTP request to the provided URL
+      const response = await axios.post(`/api/contentanalysis`, {
+        content: content
+      });
+      console.log(response, 'ddd')
+      console.log(response.status, 'dddhhdh')
+      // Check if the request was successful
+      if (response.status == 200) {
+        // Parse the JSON response
+        setAnalysisResult(response.data);
+      } else {
+        setAnalysisResult({ error: `Error: ${response.status}` });
+      }
+    } catch (error) {
+      setAnalysisResult({ error: `Error: ${error.message}` });
+    } finally {
+      setLoading(false);
+    }
   }
 
- 
+
 
   return (
     <div className="relative isolate bg-gray-900 px-6 pt-14 lg:px-8">
@@ -28,22 +49,22 @@ export function Hero() {
       <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
         <div className="text-center">
           <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-          AI-Powered Content Creation
+            AI-Powered Content Creation
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-200">
-          Effortlessly Generate Tailored Articles Aligned with Your Website's Content
+            Effortlessly Generate Tailored Articles Aligned with Your Website's Content
           </p>
         </div>
         <div className="mt-8">
-          <form className="mt-2 flex flex-row space-x-2" onSubmit={urlAnalyze}>
+          <form className="mt-2 flex flex-row space-x-2" onSubmit={contentAnalyze}>
             <input
-              type="url"
+              type="text"
               name="url"
               id="url"
               className="block w-full rounded-md border-0 p-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  bg-transparent sm:text-sm sm:leading-6"
-              placeholder="Enter Website URL"
-              value={url}
-              onChange={(e) => {setUrl(e.target.value)}}
+              placeholder="Enter your website content"
+              value={content}
+              onChange={(e) => { setContent(e.target.value) }}
             />
             <button
               type="submit"
