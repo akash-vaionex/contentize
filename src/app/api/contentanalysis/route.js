@@ -55,7 +55,7 @@ export async function POST(request) {
 
 Write a compelling blog post of about 200 words that provides valuable insights, informative content, or engaging stories related to [one or more keywords from the provided list]. Ensure the tone is informative yet conversational, catering to the audience interested in mention the target audience or niche.
 
-Feel free to delve into ${body?.keywords}. The content should captivate readers, offering them actionable advice, interesting facts, or solutions to common problems within the domain of ${body.description}. Make the blog within 300-500 words only.\n Take this content for the refrence${body.content}\n\n`,
+Feel free to delve into ${body?.keywords}. The content should captivate readers, offering them actionable advice, interesting facts, or solutions to common problems within the domain of ${body.description}. Make the blog within 300-500 words only.\n Take this content for the refrence${body.mainContent}\n\n`,
             },
         ];
 

@@ -69,8 +69,8 @@ export function Hero() {
       // Check if the request was successful
       if (response.status == 200) {
         console.log('pushing it to data')
-        setGeneratedContent(response.data)
-        router.push('/generated-data')
+        setGeneratedContent(response.data.result)
+        router.push('/generated-content')
       } else {
         // setAnalysisResult({ error: `Error: ${response.status}` });
       }
@@ -128,71 +128,64 @@ export function Hero() {
         <div id="result" className="mt-8">
           {analysisResult == {} ? (
             <p>{analysisResult.error}</p>
-          ) : (Object.keys(analysisResult).length !== 0 ?
-            <div>
-              <div className="mt-12">
-                <dl className="divide-y divide-white/10">
+          ) :
+            (Object.keys(analysisResult).length !== 0 ?
+              <div>
+                <div className="mt-12">
+                  <dl className="divide-y divide-white/10">
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm font-medium leading-6 text-white">
+                        Website URL
+                      </dt>
+                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                        {urlInput}
+                      </dd>
+                    </div>
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm font-medium leading-6 text-white">
+                        Title
+                      </dt>
+                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                        {analysisResult.title !== '' ? analysisResult.title : 'NA'}
+                      </dd>
+                    </div>
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm font-medium leading-6 text-white">
+                        Description
+                      </dt>
+                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                        {analysisResult.metaDescription !== '' ? analysisResult.metaDescription : 'NA'}
+                      </dd>
+                    </div>
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm font-medium leading-6 text-white">
+                        Keywords
+                      </dt>
+                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                        {analysisResult.keyword !== undefined ? analysisResult.keyword : 'NA'}
+                      </dd>
+                    </div>
+                  </dl>
+                  {/* <Link href={'/generated-content'} className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mt-8">Generate Content</Link> */}
+                </div>
+
+                <dl className="divide-y divide-gray-100">
+
                   <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm font-medium leading-6 text-white">
-                      Website URL
-                    </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                      {urlInput}
-                    </dd>
-                  </div>
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm font-medium leading-6 text-white">
-                      Title
-                    </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                      {analysisResult.title !== '' ? analysisResult.title : 'NA'}
-                    </dd>
-                  </div>
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm font-medium leading-6 text-white">
-                      Description
-                    </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                      {analysisResult.metaDescription !== '' ? analysisResult.metaDescription : 'NA'}
-                    </dd>
-                  </div>
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm font-medium leading-6 text-white">
-                      Keywords
-                    </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                      {analysisResult.keyword !== undefined ? analysisResult.keyword : 'NA'}
+                    <dt className="text-sm font-medium leading-6 text-white">Icon</dt>
+                    <dd className="mt-2 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
+                      {analysisResult?.favicon?.includes("http") ?
+                        <img src={`${analysisResult.favicon}`} className="w-10 h-10" /> : <img src={`${analysisResult.canonicalLink}${analysisResult.favicon}`} className="w-10 h-10" />
+                      }
                     </dd>
                   </div>
                 </dl>
-                <Link href={'/generated-content'} className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mt-8">Generate Content</Link>
-              </div>
 
-              <dl className="divide-y divide-gray-100">
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm font-medium leading-6 text-white">Title</dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{analysisResult.title}</dd>
-                </div>
+              </div> : null
 
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm font-medium leading-6 text-white">Description</dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {analysisResult.metaDescription}
-                  </dd>
-                </div>
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm font-medium leading-6 text-white">Icon</dt>
-                  <dd className="mt-2 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-                    {analysisResult?.favicon?.includes("http") ?
-                      <img src={`${analysisResult.favicon}`} className="w-10 h-10" /> : <img src={`${analysisResult.canonicalLink}${analysisResult.favicon}`} className="w-10 h-10" />
-                    }
-                  </dd>
-                </div>
-              </dl>
-            </div>
-          }
+            )}
         </div>
-        {analysisResult && analysisResult != {} && <button
+        {analysisResult && Object.keys(analysisResult).length != 0 && <button
           onClick={analyseContent}
           className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           disabled={isContentLoading}

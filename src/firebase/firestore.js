@@ -25,3 +25,8 @@ export const getCurrentUserData = async (userId) => {
   }
   return null
 }
+
+export const updateContentData = async (updatedObj) => {
+  const docRef = doc(firestore, 'users', userId)
+  await setDoc(docRef, updatedObj, { merge: true })
+}
