@@ -1,55 +1,51 @@
 'use client'
-import axios from "axios";
-import { useState, useEffect } from "react"
+import axios from 'axios'
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
 export function Hero() {
-  const [urlInput, setUrlInput] = useState('');
-  const [analysisResult, setAnalysisResult] = useState({});
-  const [loading, setLoading] = useState(false);
-
+  const [urlInput, setUrlInput] = useState('')
+  const [analysisResult, setAnalysisResult] = useState({})
+  const [loading, setLoading] = useState(false)
 
   const analyzeUrl = async (e) => {
     e.preventDefault()
-    setLoading(true);
-    console.log(urlInput, 'ddd')
+    setLoading(true)
     try {
       // Make an HTTP request to the provided URL
-      const response = await axios.get(`/api/urlanalysis?url=${encodeURIComponent(urlInput)}`);
-      console.log(response, 'dddhhdh')
+      const response = await axios.get(
+        `/api/urlanalysis?url=${encodeURIComponent(urlInput)}`,
+      )
       // Check if the request was successful
       if (response.status == 200) {
         // Parse the JSON response
-        setAnalysisResult(response.data);
+        setAnalysisResult(response.data)
       } else {
-        setAnalysisResult({ error: `Error: ${response.status}` });
+        setAnalysisResult({ error: `Error: ${response.status}` })
       }
     } catch (error) {
-      setAnalysisResult({ error: `Error: ${error.message}` });
+      setAnalysisResult({ error: `Error: ${error.message}` })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
-  useEffect(() => {
-    const keyDownHandler = event => {
-      console.log('User pressed: ', event.key);
+  // useEffect(() => {
+  //   const keyDownHandler = (event) => {
 
-      if (event.key === 'Enter') {
-        event.preventDefault();
+  //     if (event.key === 'Enter') {
+  //       event.preventDefault()
 
-        // 👇️ call submit function here
-        analyzeUrl(event);
-      }
-    };
+  //       // 👇️ call submit function here
+  //       analyzeUrl(event)
+  //     }
+  //   }
 
-    document.addEventListener('keydown', keyDownHandler);
+  //   document.addEventListener('keydown', keyDownHandler)
 
-    return () => {
-      document.removeEventListener('keydown', keyDownHandler);
-    };
-  }, []);
-
-
-
+  //   return () => {
+  //     document.removeEventListener('keydown', keyDownHandler)
+  //   }
+  // }, [])
 
   return (
     <div className="relative isolate bg-gray-900 px-6 pt-14 lg:px-8">
@@ -84,7 +80,6 @@ export function Hero() {
               placeholder="Enter Website URL"
               value={urlInput}
               onChange={(e) => setUrlInput(e.target.value)}
-
             />
             <button
               type="submit"
@@ -98,36 +93,50 @@ export function Hero() {
         <div id="result" className="mt-8">
           {!analysisResult ? (
             <p>{analysisResult.error}</p>
-          ) : (
-            <>
-              <div className="mx-auto max-w-2xl lg:mx-0">
-                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Here is the result:</h2>
+          ) : ( Object.keys(analysisResult).length !== 0 ?
+            <div>
+              <div className="mt-12">
+                <dl className="divide-y divide-white/10">
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-white">
+                      Website URL 
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                      {urlInput}
+                    </dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-white">
+                      Title
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                      {analysisResult.title !== '' ? analysisResult.title : 'NA'}
+                    </dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-white">
+                      Description
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                      {analysisResult.metaDescription !== '' ? analysisResult.metaDescription : 'NA'}
+                    </dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-white">
+                      Keywords  
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                      {analysisResult.keyword !== undefined ? analysisResult.keyword : 'NA'}
+                    </dd>
+                  </div>
+                </dl>
+                <Link href={'/generated-content'} className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mt-8">Generate Content</Link>
               </div>
-
-              <dl className="divide-y divide-gray-100">
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm font-medium leading-6 text-white">Title</dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{analysisResult.title}</dd>
-                </div>
-
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm font-medium leading-6 text-white">Description</dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {analysisResult.metaDescription}
-                  </dd>
-                </div>
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm font-medium leading-6 text-white">Links</dt>
-                  <dd className="mt-2 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-                    {analysisResult?.links?.length > 0 && analysisResult?.links.map(el => <>
-                      {el} <br /></>)}
-                  </dd>
-                </div>
-              </dl>
-            </>
+            </div> : null
           )}
         </div>
       </div>
+
       <div
         className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
         aria-hidden="true"
