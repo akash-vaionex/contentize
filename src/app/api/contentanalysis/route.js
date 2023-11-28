@@ -50,12 +50,7 @@ export async function POST(request) {
         const messages = [
             {
                 role: "assistant",
-                content: `
-                "Imagine you are a seasoned writer crafting an engaging blog post for a website titled ${body.title}' The website aims to [describe the purpose or focus of the website from the description provided]. The keywords associated with this website are ${body?.keywords}.
-
-Write a compelling blog post of about 200 words that provides valuable insights, informative content, or engaging stories related to [one or more keywords from the provided list]. Ensure the tone is informative yet conversational, catering to the audience interested in mention the target audience or niche.
-
-Feel free to delve into ${body?.keywords}. The content should captivate readers, offering them actionable advice, interesting facts, or solutions to common problems within the domain of ${body.description}. Make the blog within 300-500 words only.\n Take this content for the refrence${body.mainContent}\n\n`,
+                content: `Provide the title, a brief description of the website's purpose or focus, associated keywords, and a reference to the main content for a blog post. Additionally, include any specific preferences for the target audience or niche. For instance, if the title is "Unlocking the Secrets of ${body.title}" and the website focuses on [describe the purpose or focus], with keywords like ${body?.keywords}, and a reference to the main content "${body.mainContent}", generate a compelling blog post of about 200 words. Ensure the content offers valuable insights, informative details, or engaging stories related to the specified keywords, maintaining an informative yet conversational tone tailored to the specified audience or niche. Finally, expand the content to a full-length blog post within the range of 300-500 words, balancing information and engagement.`
             },
         ];
 
@@ -66,7 +61,7 @@ Feel free to delve into ${body?.keywords}. The content should captivate readers,
             function_call: {
                 name: "content_analysis",
                 arguments: {
-                    text: body.content,
+                    text: body.mainContent,
                 },
             },
         });
