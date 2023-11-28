@@ -64,10 +64,8 @@ export function Hero() {
       const response = await axios.post(`/api/contentanalysis`, {
         data: analysisResult
       });
-      console.log(response, 'dddadsffsdfasdfdsa')
-      console.log(response.status, 'dddhhdh')
       // Check if the request was successful
-      if (response.status == 200) {
+      if (response) {
         console.log('pushing it to data')
         setGeneratedContent(response.data.result)
         router.push('/generated-content')
